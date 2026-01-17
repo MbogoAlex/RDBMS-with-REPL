@@ -172,7 +172,11 @@ curl http://localhost:8080/api/tables
 
 **Get Table Schema:**
 ```bash
-curl http://localhost:8080/api/tables/products/schema
+# Replace {tableName} with your actual table name
+curl http://localhost:8080/api/tables/{tableName}/schema
+
+# Example:
+curl http://localhost:8080/api/tables/books/schema
 ```
 
 **Health Check:**

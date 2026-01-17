@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom RDBMS - Web Interface</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>Custom RDBMS</h1>
+            <p>Relational Database Management System</p>
+            <div class="status">
+                <span id="status-indicator" class="status-dot"></span>
+                <span id="status-text">Connecting...</span>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <h2>📊 Tables</h2>
+                <div id="tables-list" class="tables-list">
+                    <p class="loading">Loading tables...</p>
+                </div>
+                <button onclick="refreshTables()" class="btn btn-secondary">🔄 Refresh</button>
+            </aside>
+
+            <!-- Main Area -->
+            <main class="main-area">
+                <!-- Tab Navigation -->
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="showTab('repl')">💻 SQL Terminal</button>
+                    <button class="tab-btn" onclick="showTab('gui')">📝 GUI Mode</button>
+                    <button class="tab-btn" onclick="showTab('query')">🔍 Query Builder</button>
+                </div>
+
+                <!-- REPL Terminal Tab -->
+                <div id="repl-tab" class="tab-content active">
+                    <div class="terminal-container">
+                        <div class="terminal-header">
+                            <span>SQL Terminal</span>
+                            <button onclick="clearTerminal()" class="btn-clear">Clear</button>
+                        </div>
+                        <div id="terminal-output" class="terminal-output">
+                            <div class="terminal-welcome">
+╔═══════════════════════════════════════════╗
+║   Custom RDBMS - SQL Terminal            ║
+║   Type SQL commands below                 ║
+╚═══════════════════════════════════════════╝
+
+Type 'help' for examples or start with:
+  CREATE TABLE products (id INT PRIMARY KEY, name VARCHAR(100))
+                            </div>
+                        </div>
+                        <div class="terminal-input-area">
+                            <span class="prompt">sql></span>
+                            <input type="text" id="terminal-input" class="terminal-input" 
+                                   placeholder="Enter SQL command..." autocomplete="off">
+                        </div>
+                        <div class="terminal-history">
+                            <button onclick="showHistory()" class="btn-history">📜 History</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GUI Mode Tab -->
+                <div id="gui-tab" class="tab-content">
+                    <div class="gui-section">
+                        <h3>Create New Table</h3>
+                        <div class="form-group">
+                            <label>Table Name:</label>
+                            <input type="text" id="new-table-name" placeholder="e.g., products" class="input">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Columns:</label>
+                            <div id="columns-container" class="columns-container">
+                                <!-- Dynamic columns will be added here -->
+                            </div>
+                            <button onclick="addColumnField()" class="btn btn-secondary" style="margin-top: 10px;">
+                                ➕ Add Column
+                            </button>
+                        </div>
+                        
+                        <button onclick="createTableFromGUI()" class="btn btn-primary">Create Table</button>
+                    </div>
+
+                    <div class="gui-section">
+                        <h3>Manage Data</h3>
+                        <div class="form-group">
+                            <label>Select Table:</label>
+                            <select id="selected-table" class="select" onchange="loadTableData()">
+                                <option value="">-- Select a table --</option>
+                            </select>
+                        </div>
+
+                        <div id="table-info" class="table-info"></div>
+
+                        <div id="data-form" class="data-form" style="display: none;">
+                            <h4>Insert Data</h4>
+                            <div id="insert-fields"></div>
+                            <button onclick="insertData()" class="btn btn-success">Insert Row</button>
+                        </div>
+
+                        <div id="table-data-container">
+                            <h4>Table Data</h4>
+                            <div id="table-data"></div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button onclick="dropSelectedTable()" class="btn btn-danger">Drop Table</button>
+                            <button onclick="truncateSelectedTable()" class="btn btn-warning">Delete All Data</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Query Builder Tab -->
+                <div id="query-tab" class="tab-content">
+                    <div class="query-builder">
+                        <h3>Quick Query Builder</h3>
+                        <div class="form-group">
+                            <label>Table:</label>
+                            <select id="query-table" class="select">
+                                <option value="">-- Select table --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Columns (comma separated or * for all):</label>
+                            <input type="text" id="query-columns" class="input" value="*">
+                        </div>
+                        <div class="form-group">
+                            <label>WHERE clause (optional):</label>
+                            <input type="text" id="query-where" class="input" placeholder="e.g., price > 1000">
+                        </div>
+                        <button onclick="buildAndExecuteQuery()" class="btn btn-primary">Execute Query</button>
+                        
+                        <div id="query-result" class="query-result"></div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

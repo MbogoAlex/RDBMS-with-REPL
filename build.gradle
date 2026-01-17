@@ -1,0 +1,46 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.0.1'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.rdmbs.rdbms'
+version = '0.0.1-SNAPSHOT'
+description = 'Custom RDBMS - Pesapal Challenge'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// Task to run the REPL
+task runRepl(type: JavaExec) {
+	group = 'application'
+	description = 'Run the Database REPL (interactive shell)'
+	classpath = sourceSets.main.runtimeClasspath
+	mainClass = 'com.rdmbs.rdbms.rdbms.repl.DatabaseREPL'
+	standardInput = System.in
+}

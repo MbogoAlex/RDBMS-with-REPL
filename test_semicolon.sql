@@ -1,0 +1,9 @@
+CREATE TABLE books (id INT PRIMARY KEY, name VARCHAR(50));
+DESC books;
+DESCRIBE books;
+DESC books
+DESCRIBE books
+SHOW TABLES;
+SHOW TABLES
+SELECT * FROM books;
+exit
